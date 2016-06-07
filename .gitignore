@@ -235,3 +235,5 @@ _Pvt_Extensions
 # FAKE - F# Make
 .fake/
 /DiscordWeatherBot/Api.key
+/DiscordWeatherBot/weather.key
+/DiscordWeatherBot/discord.key
