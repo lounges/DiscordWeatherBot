@@ -2,4 +2,7 @@
 
 A simple chat bot for Discord which queries Weather Underground and returns the weather for the specified postal code.
 
-NOTE: This codebase does not include an api key for Weather Underground.  You must sign up for a key here: https://www.wunderground.com/weather/api/ and create a file called "Api.Key" which contains the key.
+NOTE: This codebase does not include api keys for Weather Underground or Discord.
+After obtaining them you must put them in embedded resources named:
+discord.key
+weather.key

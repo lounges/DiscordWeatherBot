@@ -70,6 +70,10 @@ namespace DiscordWeatherBot
                             message = $"The weather in {results.display_location.full} is now: {results.temp_c} ({results.temp_f} F)";
 
                         await e.Channel.SendMessage(message);
+
+
+                        
+
                     }
                 }
             };
@@ -77,6 +81,8 @@ namespace DiscordWeatherBot
             Console.WriteLine("Connecting to Discord...");
             var connectTask = client.Connect(discordKey);
             connectTask.Wait();
+            client.SetStatus(UserStatus.Online);
+            client.SetGame("WeatherUnderground");
 
 
             Console.In.ReadLine();
