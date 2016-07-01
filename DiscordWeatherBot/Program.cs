@@ -97,13 +97,32 @@ namespace DiscordWeatherBot
             client = new DiscordClient();
             client.MessageReceived += async (s,e) =>
             {
-                const string weatherCommand = "!weather";
+                if (e.User.Id == client.CurrentUser.Id)
+                    return;
+
+                const string weatherCommand = "weather";
+                const string temperatureCommand = "temperature";
 
                 var lower = e.Message.RawText.ToLower().Trim();
-                var isWeatherRequest = lower.StartsWith(weatherCommand);
-                if( isWeatherRequest )
+                var isWeatherRequest = lower.Contains(weatherCommand);
+                if (!isWeatherRequest && lower.Contains(temperatureCommand))
+                    isWeatherRequest = true;
+                if ( isWeatherRequest )
                 {
-                    var location = lower.Substring(weatherCommand.Length);
+                    lower = lower.Replace(" in", "");
+                    lower = lower.Replace("?", "");
+                    lower = lower.Replace(" like", "");
+                    var weatherStartPos = lower.IndexOf(weatherCommand);
+                    if( weatherStartPos > 0 ) weatherStartPos += weatherCommand.Length + 1;
+
+                    if( weatherStartPos < 1) weatherStartPos = lower.IndexOf(temperatureCommand) + temperatureCommand.Length + 1;
+                    var nextSpace = lower.IndexOf(" ", weatherStartPos);
+
+                    if (nextSpace < 0)
+                        nextSpace = lower.Length;
+
+                    var location = lower.Substring(weatherStartPos, nextSpace - weatherStartPos);
+                    location = location.Trim();
                     if( location.Length > 0 )
                     {
                         var results = await GetWeather(location.Trim());
@@ -120,15 +139,15 @@ namespace DiscordWeatherBot
 
 
 
-                const string confirmedCommand = "!confirmed";
-                const string bustedCommand = "!busted";
-                const string plausibleCommand = "!plausible";
+                const string confirmedCommand = "confirmed";
+                const string bustedCommand = "busted";
+                const string plausibleCommand = "plausible";
 
                 lower = e.Message.RawText.ToLower().Trim();
 
-                var isConfirmed = lower.StartsWith(confirmedCommand);
-                var isBusted = lower.StartsWith(bustedCommand);
-                var isPlausible = lower.StartsWith(plausibleCommand);
+                var isConfirmed = lower.Contains(confirmedCommand);
+                var isBusted = lower.Contains(bustedCommand);
+                var isPlausible = lower.Contains(plausibleCommand);
 
                 if (isConfirmed)
                     await e.Channel.SendFile(confirmedImages[r.Next(confirmedImages.Count)]);
