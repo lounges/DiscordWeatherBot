@@ -135,26 +135,29 @@ namespace DiscordWeatherBot
                 }
 
 
-
-
-
-
                 const string confirmedCommand = "confirmed";
                 const string bustedCommand = "busted";
                 const string plausibleCommand = "plausible";
+                const string cmonCommand = "cmon";
 
                 lower = e.Message.RawText.ToLower().Trim();
 
                 var isConfirmed = lower.Contains(confirmedCommand);
                 var isBusted = lower.Contains(bustedCommand);
                 var isPlausible = lower.Contains(plausibleCommand);
+                var isCmon = lower.Replace("'", "").Contains(cmonCommand);
 
                 if (isConfirmed)
                     await e.Channel.SendFile(confirmedImages[r.Next(confirmedImages.Count)]);
-                else if (isBusted)
+
+                if (isBusted)
                     await e.Channel.SendFile(bustedImages[r.Next(bustedImages.Count)]);
-                else if (isPlausible)
+
+                if (isPlausible)
                     await e.Channel.SendFile(plausibleImages[r.Next(plausibleImages.Count)]);
+
+                if (isCmon)
+                    await e.Channel.SendFile("Images/cmon.png");
 
 
             };
