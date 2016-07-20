@@ -12,42 +12,52 @@ namespace DiscordWeatherBot
 {
     class Program
     {
-        public static List<string> bustedImages = new List<string>
+        public static Dictionary<string, List<string>> imageCommands = new Dictionary<string, List<string>>
         {
-            "Images/busted1.jpg",
-            "Images/busted2.jpg",
-            "Images/busted3.jpg",
-            "Images/busted4.jpg",
-            "Images/busted5.png",
-            "Images/busted6.jpg",
-            "Images/busted7.jpg",
-            "Images/busted8.jpg",
-            "Images/busted9.jpg",
-            "Images/busted10.jpg",
-            "Images/busted11.jpg",
-        };
-
-        public static List<string> confirmedImages = new List<string>
-        {
-            "Images/confirmed1.jpg",
-            "Images/confirmed2.jpg",
-            "Images/confirmed3.jpg",
-            "Images/confirmed4.jpg",
-            "Images/confirmed5.jpg",
-            "Images/confirmed6.jpg",
-            "Images/confirmed7.jpg",
-            "Images/confirmed8.jpg",
-            "Images/confirmed9.jpg",
-        };
-
-        public static List<string> plausibleImages = new List<string>
-        {
-            "Images/plausible1.jpg",
-            "Images/plausible2.jpg",
-            "Images/plausible3.jpg",
-            "Images/plausible4.jpg",
-            "Images/plausible5.jpg",
-            "Images/plausible6.jpg",
+            ["confirmed"] = new List<string>
+            {
+                "Images/confirmed1.jpg",
+                "Images/confirmed2.jpg",
+                "Images/confirmed3.jpg",
+                "Images/confirmed4.jpg",
+                "Images/confirmed5.jpg",
+                "Images/confirmed6.jpg",
+                "Images/confirmed7.jpg",
+                "Images/confirmed8.jpg",
+                "Images/confirmed9.jpg",
+            },
+            ["plausible"] = new List<string>
+            {
+                "Images/plausible1.jpg",
+                "Images/plausible2.jpg",
+                "Images/plausible3.jpg",
+                "Images/plausible4.jpg",
+                "Images/plausible5.jpg",
+                "Images/plausible6.jpg",
+            },
+            ["busted"] = new List<string>
+            {
+                "Images/busted1.jpg",
+                "Images/busted2.jpg",
+                "Images/busted3.jpg",
+                "Images/busted4.jpg",
+                "Images/busted5.png",
+                "Images/busted6.jpg",
+                "Images/busted7.jpg",
+                "Images/busted8.jpg",
+                "Images/busted9.jpg",
+                "Images/busted10.jpg",
+                "Images/busted11.jpg",
+            },
+            ["cmon"] = new List<string>
+            {
+                "Images/cmon.png",
+                "Images/cmon2.jpg",
+            },
+            ["mars"] = new List<string>
+            {
+                "Images/mars.jpg",
+            }
         };
 
         //client id is the public client id of your bot, it can be found here:
@@ -134,31 +144,13 @@ namespace DiscordWeatherBot
                     }
                 }
 
-
-                const string confirmedCommand = "confirmed";
-                const string bustedCommand = "busted";
-                const string plausibleCommand = "plausible";
-                const string cmonCommand = "cmon";
-
-                lower = e.Message.RawText.ToLower().Trim();
-
-                var isConfirmed = lower.Contains(confirmedCommand);
-                var isBusted = lower.Contains(bustedCommand);
-                var isPlausible = lower.Contains(plausibleCommand);
-                var isCmon = lower.Replace("'", "").Contains(cmonCommand);
-
-                if (isConfirmed)
-                    await e.Channel.SendFile(confirmedImages[r.Next(confirmedImages.Count)]);
-
-                if (isBusted)
-                    await e.Channel.SendFile(bustedImages[r.Next(bustedImages.Count)]);
-
-                if (isPlausible)
-                    await e.Channel.SendFile(plausibleImages[r.Next(plausibleImages.Count)]);
-
-                if (isCmon)
-                    await e.Channel.SendFile("Images/cmon.png");
-
+                lower = e.Message.RawText.ToLower().Trim().Replace("'", "");
+                foreach ( var kvp in imageCommands )
+                {
+                    var isCommand = lower.Contains(kvp.Key);
+                    if (isCommand)
+                        await e.Channel.SendFile(kvp.Value[r.Next(kvp.Value.Count)]);
+                }
 
             };
 
