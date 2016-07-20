@@ -120,29 +120,36 @@ namespace DiscordWeatherBot
                     isWeatherRequest = true;
                 if ( isWeatherRequest )
                 {
-                    lower = lower.Replace(" in", "");
-                    lower = lower.Replace("?", "");
-                    lower = lower.Replace(" like", "");
-                    var weatherStartPos = lower.IndexOf(weatherCommand);
-                    if( weatherStartPos > 0 ) weatherStartPos += weatherCommand.Length + 1;
-
-                    if( weatherStartPos < 1) weatherStartPos = lower.IndexOf(temperatureCommand) + temperatureCommand.Length + 1;
-                    var nextSpace = lower.IndexOf(" ", weatherStartPos);
-
-                    if (nextSpace < 0)
-                        nextSpace = lower.Length;
-
-                    var location = lower.Substring(weatherStartPos, nextSpace - weatherStartPos);
-                    location = location.Trim();
-                    if( location.Length > 0 )
+                    try
                     {
-                        var results = await GetWeather(location.Trim());
-                        var message = $"Unable to locate weather for: \"{location}\"";
-                        if (results != null)
-                            message = $"The temperature in {results.display_location.full} is now: {results.temp_c} ({results.temp_f} F)\r\nHumidity: {results.relative_humidity}\r\nWinds {results.wind_string}\r\nIt is presently: {results.weather}\r\n";
+                        lower = lower.Replace(" in", "");
+                        lower = lower.Replace("?", "");
+                        lower = lower.Replace(" like", "");
 
-                        await e.Channel.SendMessage(message);
+                        var weatherStartPos = lower.IndexOf(weatherCommand);
+                        if (weatherStartPos > 0) weatherStartPos += weatherCommand.Length + 1;
+
+                        if (weatherStartPos < 1) weatherStartPos = lower.IndexOf(temperatureCommand) + temperatureCommand.Length + 1;
+                        var nextSpace = lower.IndexOf(" ", weatherStartPos);
+
+                        if (nextSpace < 0)
+                            nextSpace = lower.Length;
+
+                        var location = lower.Substring(weatherStartPos, nextSpace - weatherStartPos);
+                        location = location.Trim();
+                        if (location.Length > 0)
+                        {
+                            var results = await GetWeather(location.Trim());
+                            var message = $"Unable to locate weather for: \"{location}\"";
+                            if (results != null)
+                                message = $"The temperature in {results.display_location.full} is now: {results.temp_c} ({results.temp_f} F)\r\nHumidity: {results.relative_humidity}\r\nWinds {results.wind_string}\r\nIt is presently: {results.weather}\r\n";
+
+                            await e.Channel.SendMessage(message);
+                        }
                     }
+                    catch(Exception)
+                    { }
+                    
                 }
 
                 lower = e.Message.RawText.ToLower().Trim().Replace("'", "");
