@@ -134,6 +134,9 @@
     <Content Include="Images\cmon4.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\cmon5.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\confirmed1.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

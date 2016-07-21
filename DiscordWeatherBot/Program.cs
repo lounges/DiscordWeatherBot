@@ -55,6 +55,7 @@ namespace DiscordWeatherBot
                 "Images/cmon2.jpg",
                 "Images/cmon3.jpg",
                 "Images/cmon4.jpg",
+                "Images/cmon5.jpg",
             },
             ["mars"] = new List<string>
             {
