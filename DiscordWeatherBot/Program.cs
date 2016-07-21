@@ -54,10 +54,18 @@ namespace DiscordWeatherBot
                 "Images/cmon.png",
                 "Images/cmon2.jpg",
                 "Images/cmon3.jpg",
+                "Images/cmon4.jpg",
             },
             ["mars"] = new List<string>
             {
                 "Images/mars.jpg",
+            },
+            ["maga"] = new List<string>
+            {
+                "Images/maga1.jpg",
+                "Images/maga2.jpg",
+                "Images/maga3.jpg",
+                "Images/maga4.jpg",
             }
         };
 
@@ -95,6 +103,8 @@ namespace DiscordWeatherBot
 
         static void Main(string[] args)
         {
+            imageCommands.Add("trump", imageCommands["maga"]);
+
             Random r = new Random();
 
             using (var reader = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("DiscordWeatherBot.weather.key")))
